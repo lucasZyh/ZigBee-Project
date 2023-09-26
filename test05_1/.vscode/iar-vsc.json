@@ -1,0 +1,18 @@
+{
+  "workspace": {
+    "path": "${workspaceFolder}\\test_w.eww"
+  },
+  "workspaces": {
+    "${workspaceFolder}\\test_w.eww": {
+      "configs": {
+        "${workspaceFolder}\\test.ewp": "Debug"
+      },
+      "selected": {
+        "path": "${workspaceFolder}\\test.ewp"
+      }
+    }
+  },
+  "workbench": {
+    "path": "D:\\\\Program Files (x86)\\\\IAR Systems\\\\Embedded Workbench 8.3"
+  }
+}

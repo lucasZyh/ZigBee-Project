@@ -1,0 +1,28 @@
+#Generating source browse information for project test
+
+
+#Abbreviations
+cc = D$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\SourceIndexer.exe
+ll = D$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\PbdLink.exe
+bd = D$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\makeBrowseData.exe
+
+
+
+#Rules
+rule index
+  depfile = $out.dep
+  command = $cc -out=$out -f $in
+rule link
+  command = $ll -M $out $in
+rule browsedata
+  command = $bd $in -output  $out
+
+
+
+#Build steps
+build 74LS164_8LED.pbi : index 74LS164_8LED.xcl
+build main.pbi : index main.xcl
+build test.pbd : link 74LS164_8LED.pbi main.pbi
+build test.pbw : browsedata test.pbd
+
+

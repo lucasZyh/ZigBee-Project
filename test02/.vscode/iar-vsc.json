@@ -1,0 +1,19 @@
+{
+  "workspace": {
+    "path": "${workspaceFolder}\\test_w.eww"
+  },
+  "workspaces": {
+    "${workspaceFolder}\\test_w.eww": {
+      "configs": {
+        "${workspaceFolder}\\test.ewp": "Debug",
+        "e:\\ZigBee-Project\\test04\\test.ewp": "Debug"
+      },
+      "selected": {
+        "path": "e:\\ZigBee-Project\\test03\\..\\test04\\test.ewp"
+      }
+    }
+  },
+  "workbench": {
+    "path": "D:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3"
+  }
+}

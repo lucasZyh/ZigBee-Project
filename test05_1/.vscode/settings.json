@@ -1,0 +1,6 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "74ls164_8led.h": "c"
+    }
+}
