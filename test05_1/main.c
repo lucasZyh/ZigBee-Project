@@ -10,6 +10,8 @@ char SendPacket[]={0x0c,0x61,0x88,0x00,0x07,0x20,0xEF,0xBE,0x20,0x50,SENDVAL};
 //11 个字节是我们有用的数据
 // CRC码 12 13个字节 是硬件自动追加
 
+char SendHW[]={0x18,0x61,0x88,0x00,0x07,0x20,0xEF,0xBE,0x20,0x50,'h','e','l','l','o',' ','w','o','r','l','d','\r','\n'};
+
 void Delay()
 {
     int y,x;
@@ -114,7 +116,9 @@ __interrupt void Key3_ISR() //P1_1
          {           
            P1DIR |=0X01;
            P1_0 ^=1;
-           RFSend(SendPacket,11);
+           //RFSend(SendPacket,11);
+           RFSend(SendHW,23);
+           
          }     
      }
 

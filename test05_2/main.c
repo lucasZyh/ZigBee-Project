@@ -87,7 +87,7 @@ void RevRFProc()
 {
  static char len;
  static char  ch;
-
+ static char  L;
     len=ch=0;
     RFIRQM0 &= ~0x40;
     IEN2 &= ~0x01;
@@ -95,6 +95,7 @@ void RevRFProc()
  
     len=RFD;//读第一个字节判断这一串数据后面有几个字节；
     //len=0x0C 12
+    L = len;
 
     while (len>0) 
     {//只要后面还有数据那么就把他都从接受缓冲区取出来
@@ -103,7 +104,8 @@ void RevRFProc()
         {//如果倒数第三个字节等于7，那么我们把LED0取反
            LS164_BYTE(ch);
         }
-        
+        if(len >= 3 && L - len >= 9)
+          Uart0SendByte(ch);
 
         len--;
      }     

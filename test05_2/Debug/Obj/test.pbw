@@ -8812,13 +8812,27 @@
     "scope": null
   },
   {
+    "ID": "c:main.c@2464@F@RevRFProc@L",
+    "What": "Variable",
+    "defdec": "Def",
+    "display": "L",
+    "location": {
+      "column": "15",
+      "line": "90",
+      "path": "E:\\ZigBee-Project\\test05_2\\main.c"
+    },
+    "name": "L",
+    "origin": "project_file",
+    "scope": null
+  },
+  {
     "ID": "c:@F@main",
     "What": "Function",
     "defdec": "Def",
     "display": "void main(void)",
     "location": {
       "column": "6",
-      "line": "118",
+      "line": "120",
       "path": "E:\\ZigBee-Project\\test05_2\\main.c"
     },
     "name": "main",
@@ -8832,7 +8846,7 @@
     "display": "void RF_IRQ(void)",
     "location": {
       "column": "18",
-      "line": "134",
+      "line": "136",
       "path": "E:\\ZigBee-Project\\test05_2\\main.c"
     },
     "name": "RF_IRQ",
