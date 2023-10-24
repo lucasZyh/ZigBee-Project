@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                            /
-// IAR C/C++ Compiler V8.10.3.10338/W32 for 8051        13/Oct/2023  22:04:51 /
+// IAR C/C++ Compiler V8.10.3.10338/W32 for 8051        24/Oct/2023  19:11:31 /
 // Copyright 2004-2011 IAR Systems AB.                                        /
 //                                                                            /
 //    Core               =  plain                                             /
@@ -135,8 +135,6 @@
         EXTERN ?BDISPATCH
         EXTERN ?BRET
         EXTERN ?CALL_IND
-        EXTERN ?INTERRUPT_ENTER_XSP
-        EXTERN ?INTERRUPT_LEAVE_XSP
         EXTERN ?V0
         EXTERN __INIT_XDATA_Z
 
@@ -154,8 +152,6 @@
         FUNCTION ??HalKeyRead?relay,0203H
         PUBLIC ??halGetJoyKeyInput?relay
         FUNCTION ??halGetJoyKeyInput?relay,0203H
-        PUBWEAK `??halKeyPort0Isr??INTVEC 107`
-        PUBWEAK `??halKeyPort2Isr??INTVEC 51`
         PUBLIC ??halProcessKeyInterrupt?relay
         FUNCTION ??halProcessKeyInterrupt?relay,0203H
         PUBLIC HalKeyConfig
@@ -195,8 +191,6 @@
         PUBWEAK P2SEL
         PUBWEAK PICTL
         PUBWEAK _A_IEN1
-        PUBWEAK _A_IRCON
-        PUBWEAK _A_IRCON2
         PUBWEAK _A_P0
         PUBWEAK _A_P2
         PUBLIC halGetJoyKeyInput
@@ -205,19 +199,9 @@
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME XSTACK, 9, STACK
-        PUBLIC halKeyPort0Isr
-        FUNCTION halKeyPort0Isr,021233H
-        ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        PUBLIC halKeyPort2Isr
-        FUNCTION halKeyPort2Isr,021233H
-        ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
         PUBLIC halProcessKeyInterrupt
         FUNCTION halProcessKeyInterrupt,021203H
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
+        ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
         
         CFI Names cfiNames0
@@ -308,73 +292,6 @@
         CFI ?RET_LOW Frame(CFA_SP, 1)
         CFI EndCommon cfiCommon0
         
-        
-        CFI Common cfiCommon1 Using cfiNames0
-        CFI CodeAlign 1
-        CFI DataAlign -1
-        CFI ReturnAddress ?RET CODE
-        CFI CFA_DOVERLAY Used
-        CFI CFA_IOVERLAY Used
-        CFI CFA_SP SP+-2
-        CFI CFA_PSP16 PSP16+0
-        CFI CFA_XSP16 XSP16+0
-        CFI `PSW.CY` SameValue
-        CFI `B.BR0` SameValue
-        CFI `B.BR1` SameValue
-        CFI `B.BR2` SameValue
-        CFI `B.BR3` SameValue
-        CFI `B.BR4` SameValue
-        CFI `B.BR5` SameValue
-        CFI `B.BR6` SameValue
-        CFI `B.BR7` SameValue
-        CFI `VB.BR8` SameValue
-        CFI `VB.BR9` SameValue
-        CFI `VB.BR10` SameValue
-        CFI `VB.BR11` SameValue
-        CFI `VB.BR12` SameValue
-        CFI `VB.BR13` SameValue
-        CFI `VB.BR14` SameValue
-        CFI `VB.BR15` SameValue
-        CFI VB SameValue
-        CFI B SameValue
-        CFI A SameValue
-        CFI PSW SameValue
-        CFI DPL0 SameValue
-        CFI DPH0 SameValue
-        CFI R0 SameValue
-        CFI R1 SameValue
-        CFI R2 SameValue
-        CFI R3 SameValue
-        CFI R4 SameValue
-        CFI R5 SameValue
-        CFI R6 SameValue
-        CFI R7 SameValue
-        CFI V0 SameValue
-        CFI V1 SameValue
-        CFI V2 SameValue
-        CFI V3 SameValue
-        CFI V4 SameValue
-        CFI V5 SameValue
-        CFI V6 SameValue
-        CFI V7 SameValue
-        CFI V8 SameValue
-        CFI V9 SameValue
-        CFI V10 SameValue
-        CFI V11 SameValue
-        CFI V12 SameValue
-        CFI V13 SameValue
-        CFI V14 SameValue
-        CFI V15 SameValue
-        CFI PSPH Undefined
-        CFI PSPL Undefined
-        CFI XSPH Undefined
-        CFI XSPL Undefined
-        CFI ?RET Concat
-        CFI ?BRET_EXT SameValue
-        CFI ?RET_HIGH Frame(CFA_SP, 2)
-        CFI ?RET_LOW Frame(CFA_SP, 1)
-        CFI EndCommon cfiCommon1
-        
 osal_stop_timerEx   SYMBOL "osal_stop_timerEx"
 osal_start_timerEx  SYMBOL "osal_start_timerEx"
 HalAdcRead          SYMBOL "HalAdcRead"
@@ -395,10 +312,6 @@ HalKeyRead          SYMBOL "HalKeyRead"
 ??HalKeyRead?relay  SYMBOL "?relay", HalKeyRead
 halGetJoyKeyInput   SYMBOL "halGetJoyKeyInput"
 ??halGetJoyKeyInput?relay SYMBOL "?relay", halGetJoyKeyInput
-halKeyPort0Isr      SYMBOL "halKeyPort0Isr"
-`??halKeyPort0Isr??INTVEC 107` SYMBOL "??INTVEC 107", halKeyPort0Isr
-halKeyPort2Isr      SYMBOL "halKeyPort2Isr"
-`??halKeyPort2Isr??INTVEC 51` SYMBOL "??INTVEC 51", halKeyPort2Isr
 halProcessKeyInterrupt SYMBOL "halProcessKeyInterrupt"
 ??halProcessKeyInterrupt?relay SYMBOL "?relay", halProcessKeyInterrupt
 
@@ -456,7 +369,7 @@ halProcessKeyInterrupt SYMBOL "halProcessKeyInterrupt"
 //   22   its documentation for any purpose.
 //   23 
 //   24   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-//   25   PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+//   25   PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
 //   26   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
 //   27   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
 //   28   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -567,18 +480,6 @@ P2IEN:
         ASEGN SFR_AN:DATA:NOROOT,0b8H
 // union <unnamed> volatile __sfr _A_IEN1
 _A_IEN1:
-        DATA8
-        DS 1
-
-        ASEGN SFR_AN:DATA:NOROOT,0c0H
-// union <unnamed> volatile __sfr _A_IRCON
-_A_IRCON:
-        DATA8
-        DS 1
-
-        ASEGN SFR_AN:DATA:NOROOT,0e8H
-// union <unnamed> volatile __sfr _A_IRCON2
-_A_IRCON2:
         DATA8
         DS 1
 
@@ -1501,198 +1402,6 @@ HalKeyExitSleep:
         SJMP    ?Subroutine0
         CFI EndBlock cfiBlock9
 //  470 }
-//  471 
-//  472 /***************************************************************************************************
-//  473  *                                    INTERRUPT SERVICE ROUTINE
-//  474  ***************************************************************************************************/
-//  475 
-//  476 /**************************************************************************************************
-//  477  * @fn      halKeyPort0Isr
-//  478  *
-//  479  * @brief   Port0 ISR
-//  480  *
-//  481  * @param
-//  482  *
-//  483  * @return
-//  484  **************************************************************************************************/
-
-        RSEG NEAR_CODE:CODE:NOROOT(0)
-//  485 HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
-halKeyPort0Isr:
-        CFI Block cfiBlock10 Using cfiCommon1
-        CFI Function halKeyPort0Isr
-        CODE
-//  486 {
-        FUNCALL halKeyPort0Isr, halProcessKeyInterrupt
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        PUSH    A
-        CFI A Frame(CFA_SP, 3)
-        CFI CFA_SP SP+-3
-        MOV     A,#-0xe
-        LCALL   ?INTERRUPT_ENTER_XSP
-        CFI B load(1, XDATA, add(CFA_XSP16, literal(-1)))
-        CFI VB load(1, XDATA, add(CFA_XSP16, literal(-2)))
-        CFI PSW load(1, XDATA, add(CFA_XSP16, literal(-3)))
-        CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-4)))
-        CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-5)))
-        CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-        CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-        CFI R5 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-        CFI R4 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-        CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-        CFI R3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-        CFI R2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-        CFI R1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-        CFI R0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-        CFI CFA_XSP16 add(XSP16, 14)
-        ; Saved register size: 14
-        ; Auto size: 0
-//  487   if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)
-        MOV     A,0x89
-        MOV     C,0xE0 /* A   */.1
-        JNC     ??halKeyPort0Isr_0
-//  488   {
-//  489     halProcessKeyInterrupt();
-        ; Setup parameters for call to function halProcessKeyInterrupt
-        LCALL   ??halProcessKeyInterrupt?relay
-//  490   }
-//  491 
-//  492   /*
-//  493     Clear the CPU interrupt flag for Port_0
-//  494     PxIFG has to be cleared before PxIF
-//  495   */
-//  496   HAL_KEY_SW_6_PXIFG = 0;
-??halKeyPort0Isr_0:
-        MOV     0x89,#0x0
-//  497   HAL_KEY_CPU_PORT_0_IF = 0;
-        CLR     0xc0.5
-        CFI EndBlock cfiBlock10
-//  498 }
-        REQUIRE ?Subroutine2
-        REQUIRE P0IFG
-        REQUIRE _A_IRCON
-        ; // Fall through to label ?Subroutine2
-
-        RSEG NEAR_CODE:CODE:NOROOT(0)
-?Subroutine2:
-        CFI Block cfiBlock11 Using cfiCommon1
-        CFI NoFunction
-        CFI CFA_SP SP+-3
-        CFI CFA_XSP16 add(XSP16, 14)
-        CFI VB load(1, XDATA, add(CFA_XSP16, literal(-2)))
-        CFI B load(1, XDATA, add(CFA_XSP16, literal(-1)))
-        CFI A Frame(CFA_SP, 3)
-        CFI PSW load(1, XDATA, add(CFA_XSP16, literal(-3)))
-        CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-4)))
-        CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-5)))
-        CFI R0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-        CFI R1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-        CFI R2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-        CFI R3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-        CFI R4 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-        CFI R5 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-        CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-        CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-        CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-        MOV     R7,#0x1
-        LJMP    ?INTERRUPT_LEAVE_XSP
-        CFI EndBlock cfiBlock11
-//  499 
-//  500 
-//  501 /**************************************************************************************************
-//  502  * @fn      halKeyPort2Isr
-//  503  *
-//  504  * @brief   Port2 ISR
-//  505  *
-//  506  * @param
-//  507  *
-//  508  * @return
-//  509  **************************************************************************************************/
-
-        RSEG NEAR_CODE:CODE:NOROOT(0)
-//  510 HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
-halKeyPort2Isr:
-        CFI Block cfiBlock12 Using cfiCommon1
-        CFI Function halKeyPort2Isr
-        CODE
-//  511 {
-        FUNCALL halKeyPort2Isr, halProcessKeyInterrupt
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        PUSH    A
-        CFI A Frame(CFA_SP, 3)
-        CFI CFA_SP SP+-3
-        MOV     A,#-0xe
-        LCALL   ?INTERRUPT_ENTER_XSP
-        CFI B load(1, XDATA, add(CFA_XSP16, literal(-1)))
-        CFI VB load(1, XDATA, add(CFA_XSP16, literal(-2)))
-        CFI PSW load(1, XDATA, add(CFA_XSP16, literal(-3)))
-        CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-4)))
-        CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-5)))
-        CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-        CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-        CFI R5 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-        CFI R4 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-        CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-        CFI R3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-        CFI R2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-        CFI R1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-        CFI R0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-        CFI CFA_XSP16 add(XSP16, 14)
-        ; Saved register size: 14
-        ; Auto size: 0
-//  512   if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)
-        MOV     A,0x8b
-        MOV     C,0xE0 /* A   */.0
-        JNC     ??halKeyPort2Isr_0
-//  513   {
-//  514     halProcessKeyInterrupt();
-        ; Setup parameters for call to function halProcessKeyInterrupt
-        LCALL   ??halProcessKeyInterrupt?relay
-//  515   }
-//  516 
-//  517   /*
-//  518     Clear the CPU interrupt flag for Port_2
-//  519     PxIFG has to be cleared before PxIF
-//  520     Notes: P2_1 and P2_2 are debug lines.
-//  521   */
-//  522   HAL_KEY_JOY_MOVE_PXIFG = 0;
-??halKeyPort2Isr_0:
-        MOV     0x8b,#0x0
-//  523   HAL_KEY_CPU_PORT_2_IF = 0;
-        CLR     0xe8.0
-//  524 }
-        SJMP    ?Subroutine2
-        CFI EndBlock cfiBlock12
-        REQUIRE P2IFG
-        REQUIRE _A_IRCON2
-
-        COMMON INTVEC:CODE:ROOT(0)
-        ORG 51
-`??halKeyPort2Isr??INTVEC 51`:
-        LJMP       (halKeyPort2Isr)
-
-        COMMON INTVEC:CODE:ROOT(0)
-        ORG 107
-`??halKeyPort0Isr??INTVEC 107`:
-        LJMP       (halKeyPort0Isr)
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 ??HalKeyInit?relay:
@@ -1743,6 +1452,60 @@ halKeyPort2Isr:
         DC24    HalKeyExitSleep
 
         END
+//  471 
+//  472 /***************************************************************************************************
+//  473  *                                    INTERRUPT SERVICE ROUTINE
+//  474  ***************************************************************************************************/
+//  475 
+//  476 /**************************************************************************************************
+//  477  * @fn      halKeyPort0Isr
+//  478  *
+//  479  * @brief   Port0 ISR
+//  480  *
+//  481  * @param
+//  482  *
+//  483  * @return
+//  484  **************************************************************************************************/
+//  485 //HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
+//  486 //{
+//  487 //  if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)
+//  488 //  {
+//  489 //    halProcessKeyInterrupt();
+//  490 //  }
+//  491 //
+//  492 //  /*
+//  493 //    Clear the CPU interrupt flag for Port_0
+//  494 //    PxIFG has to be cleared before PxIF
+//  495 //  */
+//  496 //  HAL_KEY_SW_6_PXIFG = 0;
+//  497 //  HAL_KEY_CPU_PORT_0_IF = 0;
+//  498 //}
+//  499 
+//  500 
+//  501 /**************************************************************************************************
+//  502  * @fn      halKeyPort2Isr
+//  503  *
+//  504  * @brief   Port2 ISR
+//  505  *
+//  506  * @param
+//  507  *
+//  508  * @return
+//  509  **************************************************************************************************/
+//  510 //HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
+//  511 //{
+//  512 //  if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)
+//  513 //  {
+//  514 //    halProcessKeyInterrupt();
+//  515 //  }
+//  516 //
+//  517 //  /*
+//  518 //    Clear the CPU interrupt flag for Port_2
+//  519 //    PxIFG has to be cleared before PxIF
+//  520 //    Notes: P2_1 and P2_2 are debug lines.
+//  521 //  */
+//  522 //  HAL_KEY_JOY_MOVE_PXIFG = 0;
+//  523 //  HAL_KEY_CPU_PORT_2_IF = 0;
+//  524 //}
 //  525 
 //  526 #else
 //  527 
@@ -1766,13 +1529,11 @@ halKeyPort2Isr:
 // 
 // 400 bytes in segment BANKED_CODE
 //  48 bytes in segment BANK_RELAYS
-//   6 bytes in segment INTVEC
-//  49 bytes in segment NEAR_CODE
-//  15 bytes in segment SFR_AN
+//  13 bytes in segment SFR_AN
 //   5 bytes in segment XDATA_Z
 // 
-// 497 bytes of CODE  memory (+  6 bytes shared)
-//   0 bytes of DATA  memory (+ 15 bytes shared)
+// 448 bytes of CODE  memory
+//   0 bytes of DATA  memory (+ 13 bytes shared)
 //   5 bytes of XDATA memory
 //
 //Errors: none

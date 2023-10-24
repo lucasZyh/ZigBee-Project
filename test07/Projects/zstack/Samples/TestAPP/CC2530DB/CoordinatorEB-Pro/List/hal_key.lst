@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR C/C++ Compiler V8.10.3.10338/W32 for 8051         13/Oct/2023  22:04:51 #
+# IAR C/C++ Compiler V8.10.3.10338/W32 for 8051         24/Oct/2023  19:11:31 #
 # Copyright 2004-2011 IAR Systems AB.                                         #
 #                                                                             #
 #    Core               =  plain                                              #
@@ -134,7 +134,7 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
      22            its documentation for any purpose.
      23          
      24            YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-     25            PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+     25            PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
      26            INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
      27            NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
      28            TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -237,16 +237,6 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
    \                                 In  segment SFR_AN, at 0xb8
    \   union <unnamed> volatile __sfr _A_IEN1
    \                     _A_IEN1:
-   \   000000                DS 1
-
-   \                                 In  segment SFR_AN, at 0xc0
-   \   union <unnamed> volatile __sfr _A_IRCON
-   \                     _A_IRCON:
-   \   000000                DS 1
-
-   \                                 In  segment SFR_AN, at 0xe8
-   \   union <unnamed> volatile __sfr _A_IRCON2
-   \                     _A_IRCON2:
    \   000000                DS 1
 
    \                                 In  segment SFR_AN, at 0xf3
@@ -978,112 +968,6 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
    \   000004   12....       LCALL   ??HalKeyRead?relay
    \   000007   80..         SJMP    ?Subroutine0
     470          }
-    471          
-    472          /***************************************************************************************************
-    473           *                                    INTERRUPT SERVICE ROUTINE
-    474           ***************************************************************************************************/
-    475          
-    476          /**************************************************************************************************
-    477           * @fn      halKeyPort0Isr
-    478           *
-    479           * @brief   Port0 ISR
-    480           *
-    481           * @param
-    482           *
-    483           * @return
-    484           **************************************************************************************************/
-
-   \                                 In  segment NEAR_CODE, align 1, keep-with-next
-    485          HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
-   \                     halKeyPort0Isr:
-    486          {
-   \   000000   C0E0         PUSH    A
-   \   000002   74F2         MOV     A,#-0xe
-   \   000004   12....       LCALL   ?INTERRUPT_ENTER_XSP
-   \   000007                ; Saved register size: 14
-   \   000007                ; Auto size: 0
-    487            if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)
-   \   000007   E589         MOV     A,0x89
-   \   000009   A2E1         MOV     C,0xE0 /* A   */.1
-   \   00000B   5003         JNC     ??halKeyPort0Isr_0
-    488            {
-    489              halProcessKeyInterrupt();
-   \   00000D                ; Setup parameters for call to function halProcessKeyInterrupt
-   \   00000D   12....       LCALL   ??halProcessKeyInterrupt?relay
-    490            }
-    491          
-    492            /*
-    493              Clear the CPU interrupt flag for Port_0
-    494              PxIFG has to be cleared before PxIF
-    495            */
-    496            HAL_KEY_SW_6_PXIFG = 0;
-   \                     ??halKeyPort0Isr_0:
-   \   000010   758900       MOV     0x89,#0x0
-    497            HAL_KEY_CPU_PORT_0_IF = 0;
-   \   000013   C2C5         CLR     0xc0.5
-    498          }
-   \   000015                REQUIRE ?Subroutine2
-   \   000015                REQUIRE P0IFG
-   \   000015                REQUIRE _A_IRCON
-   \   000015                ; // Fall through to label ?Subroutine2
-
-   \                                 In  segment NEAR_CODE, align 1, keep-with-next
-   \                     ?Subroutine2:
-   \   000000   7F01         MOV     R7,#0x1
-   \   000002   02....       LJMP    ?INTERRUPT_LEAVE_XSP
-    499          
-    500          
-    501          /**************************************************************************************************
-    502           * @fn      halKeyPort2Isr
-    503           *
-    504           * @brief   Port2 ISR
-    505           *
-    506           * @param
-    507           *
-    508           * @return
-    509           **************************************************************************************************/
-
-   \                                 In  segment NEAR_CODE, align 1, keep-with-next
-    510          HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
-   \                     halKeyPort2Isr:
-    511          {
-   \   000000   C0E0         PUSH    A
-   \   000002   74F2         MOV     A,#-0xe
-   \   000004   12....       LCALL   ?INTERRUPT_ENTER_XSP
-   \   000007                ; Saved register size: 14
-   \   000007                ; Auto size: 0
-    512            if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)
-   \   000007   E58B         MOV     A,0x8b
-   \   000009   A2E0         MOV     C,0xE0 /* A   */.0
-   \   00000B   5003         JNC     ??halKeyPort2Isr_0
-    513            {
-    514              halProcessKeyInterrupt();
-   \   00000D                ; Setup parameters for call to function halProcessKeyInterrupt
-   \   00000D   12....       LCALL   ??halProcessKeyInterrupt?relay
-    515            }
-    516          
-    517            /*
-    518              Clear the CPU interrupt flag for Port_2
-    519              PxIFG has to be cleared before PxIF
-    520              Notes: P2_1 and P2_2 are debug lines.
-    521            */
-    522            HAL_KEY_JOY_MOVE_PXIFG = 0;
-   \                     ??halKeyPort2Isr_0:
-   \   000010   758B00       MOV     0x8b,#0x0
-    523            HAL_KEY_CPU_PORT_2_IF = 0;
-   \   000013   C2E8         CLR     0xe8.0
-    524          }
-   \   000015   80..         SJMP    ?Subroutine2
-   \   000017                REQUIRE P2IFG
-   \   000017                REQUIRE _A_IRCON2
-
-   \                                 In  segment INTVEC, offset 0x33, root
-   \                     `??halKeyPort2Isr??INTVEC 51`:
-   \   000033   02....       LJMP       (halKeyPort2Isr)
-
-   \                                 In  segment INTVEC, offset 0x6b, root
-   \                     `??halKeyPort0Isr??INTVEC 107`:
-   \   00006B   02....       LJMP       (halKeyPort0Isr)
 
    \                                 In  segment BANK_RELAYS, align 1
    \                     ??HalKeyInit?relay:
@@ -1124,6 +1008,60 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
    \                     ??HalKeyExitSleep?relay:
    \   000000   12....       LCALL   ?BDISPATCH
    \   000003   ......       DC24    HalKeyExitSleep
+    471          
+    472          /***************************************************************************************************
+    473           *                                    INTERRUPT SERVICE ROUTINE
+    474           ***************************************************************************************************/
+    475          
+    476          /**************************************************************************************************
+    477           * @fn      halKeyPort0Isr
+    478           *
+    479           * @brief   Port0 ISR
+    480           *
+    481           * @param
+    482           *
+    483           * @return
+    484           **************************************************************************************************/
+    485          //HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
+    486          //{
+    487          //  if (HAL_KEY_SW_6_PXIFG & HAL_KEY_SW_6_BIT)
+    488          //  {
+    489          //    halProcessKeyInterrupt();
+    490          //  }
+    491          //
+    492          //  /*
+    493          //    Clear the CPU interrupt flag for Port_0
+    494          //    PxIFG has to be cleared before PxIF
+    495          //  */
+    496          //  HAL_KEY_SW_6_PXIFG = 0;
+    497          //  HAL_KEY_CPU_PORT_0_IF = 0;
+    498          //}
+    499          
+    500          
+    501          /**************************************************************************************************
+    502           * @fn      halKeyPort2Isr
+    503           *
+    504           * @brief   Port2 ISR
+    505           *
+    506           * @param
+    507           *
+    508           * @return
+    509           **************************************************************************************************/
+    510          //HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
+    511          //{
+    512          //  if (HAL_KEY_JOY_MOVE_PXIFG & HAL_KEY_JOY_MOVE_BIT)
+    513          //  {
+    514          //    halProcessKeyInterrupt();
+    515          //  }
+    516          //
+    517          //  /*
+    518          //    Clear the CPU interrupt flag for Port_2
+    519          //    PxIFG has to be cleared before PxIF
+    520          //    Notes: P2_1 and P2_2 are debug lines.
+    521          //  */
+    522          //  HAL_KEY_JOY_MOVE_PXIFG = 0;
+    523          //  HAL_KEY_CPU_PORT_2_IF = 0;
+    524          //}
     525          
     526          #else
     527          
@@ -1147,27 +1085,23 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
 
    Maximum stack usage in bytes:
 
-     Function                    ISTACK PSTACK XSTACK
-     --------                    ------ ------ ------
-     HalKeyConfig                    0      0      9
-       -> osal_stop_timerEx          0      0     18
-       -> osal_start_timerEx         0      0     18
-     HalKeyEnterSleep                0      0      0
-     HalKeyExitSleep                 2      0      0
-       -> HalKeyRead                 4      0      0
-     HalKeyInit                      2      0      0
-     HalKeyPoll                      2      0      0
-       -> halGetJoyKeyInput          4      0      0
-     HalKeyRead                      0      0      9
-       -> halGetJoyKeyInput          0      0     18
-     halGetJoyKeyInput               0      0     18
-       -> HalAdcRead                 0      0     18
-     halKeyPort0Isr                  0      0     14
-       -> halProcessKeyInterrupt     0      0     28
-     halKeyPort2Isr                  0      0     14
-       -> halProcessKeyInterrupt     0      0     28
-     halProcessKeyInterrupt          2      0     14
-       -> osal_start_timerEx         4      0      0
+     Function                ISTACK PSTACK XSTACK
+     --------                ------ ------ ------
+     HalKeyConfig                0      0      9
+       -> osal_stop_timerEx      0      0     18
+       -> osal_start_timerEx     0      0     18
+     HalKeyEnterSleep            0      0      0
+     HalKeyExitSleep             2      0      0
+       -> HalKeyRead             4      0      0
+     HalKeyInit                  2      0      0
+     HalKeyPoll                  2      0      0
+       -> halGetJoyKeyInput      4      0      0
+     HalKeyRead                  0      0      9
+       -> halGetJoyKeyInput      0      0     18
+     halGetJoyKeyInput           0      0     18
+       -> HalAdcRead             0      0     18
+     halProcessKeyInterrupt      2      0      0
+       -> osal_start_timerEx     4      0      0
 
 
    Segment part sizes:
@@ -1183,8 +1117,6 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
      P0IEN                             1
      P2IEN                             1
      _A_IEN1                           1
-     _A_IRCON                          1
-     _A_IRCON2                         1
      P0SEL                             1
      P2SEL                             1
      P0DIR                             1
@@ -1203,11 +1135,6 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
      halProcessKeyInterrupt           48
      HalKeyEnterSleep                  3
      HalKeyExitSleep                   9
-     halKeyPort0Isr                   21
-     ?Subroutine2                      5
-     halKeyPort2Isr                   23
-     ??halKeyPort2Isr??INTVEC 51       3
-     ??halKeyPort0Isr??INTVEC 107      3
      ??HalKeyInit?relay                6
      ??HalKeyConfig?relay              6
      ??HalKeyRead?relay                6
@@ -1220,13 +1147,11 @@ E:\ZigBee-Project\test07\Components\hal\target\CC2530EB\hal_key.c
  
  400 bytes in segment BANKED_CODE
   48 bytes in segment BANK_RELAYS
-   6 bytes in segment INTVEC
-  49 bytes in segment NEAR_CODE
-  15 bytes in segment SFR_AN
+  13 bytes in segment SFR_AN
    5 bytes in segment XDATA_Z
  
- 497 bytes of CODE  memory (+  6 bytes shared)
-   0 bytes of DATA  memory (+ 15 bytes shared)
+ 448 bytes of CODE  memory
+   0 bytes of DATA  memory (+ 13 bytes shared)
    5 bytes of XDATA memory
 
 Errors: none

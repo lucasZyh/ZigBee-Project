@@ -60,6 +60,7 @@
 #include "hal_assert.h"
 #include "hal_flash.h"
 #include"74LS164_8LED.h"
+#include "Key.h"
 /*********************************************************************
  * MACROS
  */
@@ -169,6 +170,8 @@ int main( void )
 
   LS164_Cfg();
   LS164_BYTE(10);
+  KeysIntCfg();
+  
   osal_start_system(); // No Return from here
   
   return 0;  // Shouldn't get here.
